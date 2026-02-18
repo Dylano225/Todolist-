@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scake=1.0">
+  <title>TODOLIST</title>
+  
+  <!-- Mes fonts-->
+  <script src="https://kit.fontawesome.com/b871aa048a.js" crossorigin="anonymous"></script>
+  
+  <!-- Mes favicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+   <!-- Pour le css-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+  <!--Pour debugger et voir la console -->
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
+
+  <!-- CSS externe -->
+  <link rel="stylesheet" href="style.css" />
+  
+</head>
+<body>
+  
+  <div id="root"></div>
+  
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+  
+  function App(){
+    
+    const [value,setValue] = React.useState('');
+    const [valueChange,setValueChange] = React.useState('');
+    const [valid,setValid] = React.useState(false);
+    const [editId,setEditId] = React.useState(null);
+    const [todos,setTodos] = React.useState(()=>{
+      const save = JSON.parse(localStorage.getItem('tasks'));
+      return save || [];
+    })
+    
+    const submite =(e)=>{
+      e.preventDefault();
+      
+      if (value.trim() === '') return;
+      
+     
+    setTodos([
+      ...todos,
+      {
+      id : Date.now(),
+      text : value,
+      done: false
+      }
+      ])
+      
+    setValue('')  
+      
+    }
+    
+    function toggleChecked(id){
+      return setTodos(todos.map(todo=>
+        todo.id === id
+         ?{...todo,done: !todo.done}
+           :todo
+        ))
+    }
+    
+    function onDelete(id){
+      return setTodos(todos.filter(todo => todo.id !== id))
+    }
+    
+    function onEdit(id){
+      setValid(true);
+      setEditId(id);
+      const todo = todos.find(t => t.id === id);
+      setValueChange(todo.text)
+    }
+      
+    function onCancel(){
+      setValid(false);
+      setEditId(null);
+      setValueChange('');
+    }
+    
+    function onValid(){   
+      setTodos(todos.map(todo=>
+      todo.id === editId
+      ? {...todo,
+        text:valueChange}
+      :todo
+      ));
+      setValid(false);
+      setEditId(null);
+      setValueChange('');
+      
+    }
+    
+    const visibleProduct = todos.filter(todo=>{
+      if (value && !todo.text.includes(value)){
+        return false
+      }
+      return true
+    })
+    
+    React.useEffect(()=>{
+      localStorage.setItem('tasks',JSON.stringify(todos))
+    },[todos])
+    
+    
+    
+    
+    console.log(visibleProduct)
+    
+    return (
+     <>
+      <div className='flew'>
+      <Input value={value} onChange={setValue} onSubmit={submite} />
+         {visibleProduct.map(todo=>(
+          <Display key={todo.id} task={todo} onCheck={toggleChecked} onToggle={onDelete}  onEdit={onEdit} />
+        ))}
+      </div>
+       <Formulery onCancel={onCancel} value={valueChange} onChange={setValueChange} onValid={onValid} valid={valid} />
+    </>
+    )
+  }
+  
+  function Input({value,onChange,onSubmit}){
+    return <div className='input'>
+      <form onSubmit={onSubmit}>
+      <input className='inputDisplay' placeholder="Tache à effectuer ou à rechercher" value={value} onChange={(e)=> onChange(e.target.value)} />
+      <button type="submit">Ajouter</button>
+      </form>
+    </div>
+  }
+  
+  function Display({task,onCheck,onToggle,onEdit}){
+    return <div className='todo'>
+      <input type="checkbox" id='check' checked={task.done} onChange={()=>onCheck(task.id)} />
+      <p htmlFor="check" className={task.done ? 'done' : ""}>{task.text}</p>
+      <div className='editDelet'>
+        <i className="fa-solid fa-pen-to-square edit" onClick={()=>onEdit(task.id)}></i>
+      <i className="fa-solid fa-trash-can delete" onClick={()=>onToggle(task.id)}></i>
+      </div>
+    </div>
+  }
+  
+  function Formulery({onCancel,value,onChange,onValid,valid}){
+   return <div className={valid ? 'formulery slide ' : 'formulery'}>
+      <input type="text" className="formuleryInput" value={value} onChange={(e)=> onChange(e.target.value)} />
+      <div className='formuleryDiv'>
+        <button onClick={onValid}>Ok</button>
+        <button onClick={onCancel}>Annuler</button>
+      </div>
+    </div>
+  }
+  
+  
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<App />);
+  
+  </script>
+ 
+</body>
+</html>
