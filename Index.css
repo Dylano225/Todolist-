@@ -1,0 +1,174 @@
+*{
+  font-family: 'poppins'
+}
+
+body{
+  margin: 10px;
+  background-color: #18181c;
+}
+
+.inputDisplay{
+  padding: 8px 12px;
+  outline: none;
+  width: 450px;
+  border: none;
+  border: 1px solid #ccc; 
+  color: white;
+  background-color: #18181c;
+}
+
+button{
+  padding: 9px 30px;
+  background-color: #dfe31d;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.input{
+  margin-top: 15px
+}
+
+.todo input[type='checkbox']{
+  border: none;
+  boder: 1px solid #ccc;
+  right: 710px;
+  position: absolute;
+}
+
+.todo p{
+  margin-left: 50px;
+}
+
+.flew{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.todo{
+  margin-top: 20px;
+  background-color: #080808;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  border: 1px solid #18181c;
+}
+
+.done{
+  text-decoration-line: line-through;
+  opacity: 0.6;
+  text-decoration-color: #ccc;
+  text-decoration-style: solid;
+}
+
+.delete{
+  background-color: #18181c;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.edit{
+  background-color: #18181c;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.editDelet{
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.formulery{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #080808;
+  border-radius: 3px;
+  position: fixed;
+  top: 100px;
+  left: 317px;
+  padding: 30px 10px;
+  border-radius: 20px;
+  border: 1px solid white;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.formulery.slide{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.formuleryInput{
+  padding: 8px 12px;
+  border: none;
+  outline: none;
+  background-color: #18181c;
+  color: white;
+  border-radius: 15px;
+}
+
+.formuleryDiv{
+  display: flex;
+  gap: 30px;
+}
+
+.formulery button{
+  margin-top: 10px;
+  padding: 8px 8px;
+  background-color: #18181c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+
+@media (max-width : 768px){
+  
+.inputDisplay{
+  background-color: transparent;
+  padding: 8px 12px;
+  outline: none;
+  width: 230px;
+   
+}
+
+button{
+  padding: 9px 14px
+}
+
+.flew{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+  
+.todo{
+  overflow-x: auto;
+}
+  
+.todo input[type='checkbox']{
+  border: none;
+  boder: 1px solid #ccc;
+  right: 330px;
+  position: absolute;
+}
+  
+.formulery{
+  position: fixed;
+  top: 200px;
+  left: 40px;
+}
+  
+}
+
